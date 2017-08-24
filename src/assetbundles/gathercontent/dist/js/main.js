@@ -3,10 +3,12 @@ document.onload = assignClearSearch();
 document.onload = assignSwitchMapping();
 document.onload = assignCheckAll();
 
-if (isEdit) {
+if (window.isEdit) {
+    isEdit = true;
     document.onload = assignOnChangeEvenets();
     document.finished = disableFirstOptions();
 } else {
+    isEdit = false;
     document.onload = setUpFirstRow();
     document.onload = setUpSecondRow();
     document.onload = assignOnChangeEvenets();
