@@ -93,7 +93,7 @@ class GatherContent_SettingsModel extends BaseModel
     protected function defineAttributes()
     {
         return [
-            'fastlyApiKey' => array(AttributeType::String, 'required' => false),
+            'gathercontentApiKey' => array(AttributeType::String, 'required' => false),
             'serviceId' => array(AttributeType::String, 'required' => false),
             "license"               => [AttributeType::String, "default" => null],
         ];

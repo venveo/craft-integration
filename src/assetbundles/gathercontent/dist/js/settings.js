@@ -41,6 +41,12 @@ function callApiValidation(key, email) {
     var emailElement = $('#settings-username');
     var keyElement = $('#settings-apiKey');
 
+    var data = {
+        'email': email,
+        'key': key
+    };
+    data[Craft.csrfTokenName] = window.csrfTokenValue;
+
     $.ajax({
         'type': 'post',
         'contentType': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -48,11 +54,7 @@ function callApiValidation(key, email) {
         'url': validateApiCredentialsUrl,
         'dataType': 'json',
         'timeout': 50000000,
-        data: {
-            'CRAFT_CSRF_TOKEN': window.csrfTokenValue,
-            'email': email,
-            'key': key
-        }
+        data: data
     }).done(function (data) {
 
         if (data.success === true) {

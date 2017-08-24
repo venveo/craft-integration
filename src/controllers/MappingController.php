@@ -200,19 +200,22 @@ class MappingController extends Controller
         $mapping = null;
 
         $elementErrors = [];
-        $accountOptions = [];
-        $projectOptions = [];
-        $sectionOptions = [];
-        $templateOptions = [];
-        $entryTypeOptions = [];
         $fieldOptions = [];
-        $tabOptions = [];
         $craftStatuses = $this->getCraftStatusOptions();
 
         $mainValidation = true;
         $isEdit = false;
         $form = new MappingForm();
         $post = Craft::$app->request->post();
+
+
+	    // Get Form Options
+	    $accountOptions = $this->getAccountOptions();
+	    $sectionOptions = $this->getSectionOptions();
+	    $projectOptions = $this->getProjectsOptions($form->gatherContentAccountId);
+	    $templateOptions = $this->getTemplateOptions($form->gatherContentProjectId, $form->gatherContentTemplateId);
+	    $entryTypeOptions = $this->getEntryTypeOptions($form->craftSectionId, $form->craftEntryTypeId);
+	    $tabOptions = $this->getTabOptions($form->gatherContentTemplateId, $form->craftEntryTypeId);
 
         if ($mappingId !== null || $post) {
 
@@ -262,14 +265,6 @@ class MappingController extends Controller
             }
 
             $isEdit = true;
-
-            // Get Form Options
-            $accountOptions = $this->getAccountOptions();
-            $sectionOptions = $this->getSectionOptions();
-            $projectOptions = $this->getProjectsOptions($form->gatherContentAccountId);
-            $templateOptions = $this->getTemplateOptions($form->gatherContentProjectId, $form->gatherContentTemplateId);
-            $entryTypeOptions = $this->getEntryTypeOptions($form->craftSectionId, $form->craftEntryTypeId);
-            $tabOptions = $this->getTabOptions($form->gatherContentTemplateId, $form->craftEntryTypeId);
         }
 
 
@@ -349,15 +344,15 @@ class MappingController extends Controller
         return $options;
     }
 
-    private function getProjectsOptions($acountId)
+    private function getProjectsOptions($accountId)
     {
         $options = $this->getDefaultOptions('Select Gather Project');
 
-        if (!$acountId) {
+        if (!$accountId) {
             return $options;
         }
 
-        $rows = $this->gatherContentService->getProjects($acountId);
+        $rows = $this->gatherContentService->getProjects($accountId);
         foreach ($rows as $key => $row) {
             $option = [
                 'value' => $row['id'],

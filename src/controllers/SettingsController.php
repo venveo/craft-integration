@@ -21,7 +21,7 @@ class SettingsController extends Controller
      */
     public function actionDefaultView()
     {
-        $this->redirect("fastly/settings/general");
+        $this->redirect("gathercontent/settings/general");
     }
 
     /**
@@ -103,7 +103,7 @@ class SettingsController extends Controller
         $this->requirePostRequest();
         $postData = craft()->request->getPost('settings', []);
 
-        $plugin = craft()->plugins->getPlugin('fastly');
+        $plugin = craft()->plugins->getPlugin('gathercontent');
         if (craft()->plugins->savePluginSettings($plugin, $postData)) {
             craft()->userSession->setNotice(Craft::t("Settings Saved"));
             $this->redirectToPostedUrl();
@@ -123,7 +123,7 @@ class SettingsController extends Controller
     private function provideTemplate($template)
     {
         $this->renderTemplate(
-            'fastly/settings/_' . $template,
+            'gathercontent/settings/_' . $template,
             [
                 'settings' => $this->getSettingsModel(),
             ]
@@ -136,7 +136,7 @@ class SettingsController extends Controller
     private function getSettingsModel()
     {
         /** @var Fastly_SettingsService $settingsService */
-        $settingsService = craft()->fastly_settings;
+        $settingsService = craft()->gathercontent_settings;
 
         return $settingsService->getSettingsModel();
     }
